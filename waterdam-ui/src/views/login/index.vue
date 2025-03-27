@@ -58,7 +58,7 @@ export default {
             // 可以将用户信息存储在 localStorage 中
             localStorage.setItem('user', JSON.stringify(response.data));
             // 跳转到留言板页面
-            this.$router.push('/messageboard');
+            this.$router.push('/waterdam');
           } else {
             this.errorMsg = '登录响应缺少用户信息';
           }
