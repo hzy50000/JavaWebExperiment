@@ -12,9 +12,9 @@ const routes = [
     component: () => import('../views/login/index.vue')
   },
   {
-    path: '/messageboard',
-    name: 'MessageBoard',
-    component: () => import('../views/messageboard/index.vue'),
+    path: '/waterdam',
+    name: 'waterdam',
+    component: () => import('../views/waterdam/index.vue'),
     meta: { requiresAuth: true }
   }
 ]
