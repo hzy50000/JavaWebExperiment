@@ -7,9 +7,9 @@ spring:
       secure: true
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/messageboard?useSSL=false&serverTimezone=UTC&characterEncoding=utf8&allowPublicKeyRetrieval=true
+    url: jdbc:mysql://192.168.9.28:3306/waterdam?useSSL=false&serverTimezone=UTC&characterEncoding=utf8&allowPublicKeyRetrieval=true
     username: root
-    password: 87651361
+    password: dongxu666
     hikari:
       auto-commit: false
       connection-timeout: 3000
