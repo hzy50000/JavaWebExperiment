@@ -1,8 +1,8 @@
-package com.andy.messageboard.service;
+package com.andy.waterdam.service;
 
 import java.util.List;
 
-import com.andy.messageboard.pojo.User;
+import com.andy.waterdam.pojo.User;
 
 public interface UserService {
 

@@ -1,10 +1,10 @@
-package com.andy.messageboard.mapper;
+package com.andy.waterdam.mapper;
 
 import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
 
-import com.andy.messageboard.pojo.User;
+import com.andy.waterdam.pojo.User;
 
 @Mapper
 public interface UserMapper {

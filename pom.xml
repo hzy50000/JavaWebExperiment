@@ -9,7 +9,7 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.andy</groupId>
-    <artifactId>MessageBoard</artifactId>
+    <artifactId>WaterDam</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>MessageBoard</name>
     <description>MessageBoard</description>

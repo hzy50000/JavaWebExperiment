@@ -1,13 +1,13 @@
-package com.andy.messageboard.service.impl;
+package com.andy.waterdam.service.impl;
 
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.andy.messageboard.mapper.MessageBoardMapper;
-import com.andy.messageboard.pojo.MessageBoard;
-import com.andy.messageboard.service.MessageBoardService;
+import com.andy.waterdam.mapper.MessageBoardMapper;
+import com.andy.waterdam.pojo.MessageBoard;
+import com.andy.waterdam.service.MessageBoardService;
 
 @Service
 public class MessageBoardServiceImpl implements MessageBoardService {

@@ -8,7 +8,7 @@
     </sql>
     
     <!-- 根据ID查询留言 -->
-    <select id="selectMessageBoardById" parameterType="java.lang.Long" resultType="com.andy.messageboard.pojo.MessageBoard">
+    <select id="selectMessageBoardById" parameterType="java.lang.Long" resultType="com.andy.waterdam.pojo.MessageBoard">
         SELECT 
         <include refid="Base_Column_List"/>
         FROM messageboard
@@ -16,13 +16,13 @@
     </select>
     
     <!-- 插入新留言 -->
-    <insert id="insertMessageBoard" parameterType="com.andy.messageboard.pojo.MessageBoard" useGeneratedKeys="true" keyProperty="id">
+    <insert id="insertMessageBoard" parameterType="com.andy.waterdam.pojo.MessageBoard" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO messageboard (message, user_id)
         VALUES (#{message}, #{userId})
     </insert>
     
     <!-- 更新留言 -->
-    <update id="updateMessageBoard" parameterType="com.andy.messageboard.pojo.MessageBoard">
+    <update id="updateMessageBoard" parameterType="com.andy.waterdam.pojo.MessageBoard">
         UPDATE messageboard
         <set>
             <if test="message != null">message = #{message},</if>
@@ -32,7 +32,7 @@
     </update>
     
     <!-- 查询留言列表（支持条件查询） -->
-    <select id="selectMessageBoardList" parameterType="com.andy.messageboard.pojo.MessageBoard" resultType="com.andy.messageboard.pojo.MessageBoard">
+    <select id="selectMessageBoardList" parameterType="com.andy.waterdam.pojo.MessageBoard" resultType="com.andy.waterdam.pojo.MessageBoard">
         SELECT 
         <include refid="Base_Column_List"/>
         FROM messageboard

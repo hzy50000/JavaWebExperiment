@@ -1,4 +1,4 @@
-package com.andy.messageboard.pojo;
+package com.andy.waterdam.pojo;
 
 public class User {
     private Long id;

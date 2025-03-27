@@ -1,4 +1,4 @@
-package com.andy.messageboard.interceptor;
+package com.andy.waterdam.interceptor;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;

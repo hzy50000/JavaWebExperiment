@@ -1,11 +1,11 @@
-package com.andy.messageboard.service.impl;
+package com.andy.waterdam.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.andy.messageboard.mapper.UserMapper;
-import com.andy.messageboard.pojo.User;
-import com.andy.messageboard.service.UserService;
+import com.andy.waterdam.mapper.UserMapper;
+import com.andy.waterdam.pojo.User;
+import com.andy.waterdam.service.UserService;
 
 import java.util.List;
 

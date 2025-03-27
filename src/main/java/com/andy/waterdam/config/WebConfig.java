@@ -1,11 +1,11 @@
-package com.andy.messageboard.config;
+package com.andy.waterdam.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
-import com.andy.messageboard.interceptor.LoginInterceptor;
+import com.andy.waterdam.interceptor.LoginInterceptor;
 
 @Configuration
 public class WebConfig implements WebMvcConfigurer {

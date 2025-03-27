@@ -1,6 +1,6 @@
-package com.andy.messageboard.service;
+package com.andy.waterdam.service;
 
-import com.andy.messageboard.pojo.MessageBoard;
+import com.andy.waterdam.pojo.MessageBoard;
 
 import java.util.List;
 

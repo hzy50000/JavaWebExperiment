@@ -1,4 +1,4 @@
-package com.andy.messageboard.controller;
+package com.andy.waterdam.controller;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -10,9 +10,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.andy.messageboard.pojo.LoginRequest;
-import com.andy.messageboard.pojo.User;
-import com.andy.messageboard.service.UserService;
+import com.andy.waterdam.pojo.LoginRequest;
+import com.andy.waterdam.pojo.User;
+import com.andy.waterdam.service.UserService;
 
 import jakarta.servlet.http.HttpSession;
 
