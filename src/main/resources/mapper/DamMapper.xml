@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.andy.waterdam.mapper.DamMapper">
+
+    <!-- 基础列名 -->
+    <sql id="Base_Column_List">
+        id, name, river, capacity, complete_date
+    </sql>
+
+    <!-- 获取所有水库 -->
+    <select id="getWaterDamList" resultType="com.andy.waterdam.pojo.Dam">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM waterdam
+    </select>
+
+    <!-- 根据ID获取水库 -->
+    <select id="getWaterDamById" parameterType="java.lang.Long" resultType="com.andy.waterdam.pojo.Dam">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM waterdam
+        WHERE id = #{id}
+    </select>
+
+    <!-- 插入新水库 -->
+    <insert id="insertWaterDam" parameterType="com.andy.waterdam.pojo.Dam" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO waterdam (name, river, capacity, complete_date)
+        VALUES (#{name}, #{river}, #{capacity}, #{complete_date})
+    </insert>
+
+    <!-- 更新水库信息 -->
+    <update id="updateWaterDam" parameterType="com.andy.waterdam.pojo.Dam">
+        UPDATE waterdam
+        <set>
+            <if test="name != null">name = #{name},</if>
+            <if test="river != null">river = #{river},</if>
+            <if test="capacity != null">capacity = #{capacity},</if>
+            <if test="complete_date != null">complete_date = #{complete_date},</if>
+        </set>
+        WHERE id = #{id}
+    </update>
+
+    <!-- 根据ID删除水库 -->
+    <delete id="deleteWaterDamById" parameterType="java.lang.Long">
+        DELETE FROM waterdam
+        WHERE id = #{id}
+    </delete>
+
+</mapper>
