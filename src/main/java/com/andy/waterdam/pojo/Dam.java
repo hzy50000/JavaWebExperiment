@@ -3,13 +3,13 @@ package com.andy.waterdam.pojo;
 import java.util.Date;
 
 public class Dam {
-    private Integer id;
+    private Long id;
     private String name;
     private String river;
-    private Integer capacity;
+    private Long capacity;
     private Date createTime;
 
-    public Dam(Integer id, String name, String river, Integer capacity, Date createTime) {
+    public Dam(Long id, String name, String river, Long capacity, Date createTime) {
         this.id = id;
         this.name = name;
         this.river = river;
@@ -28,11 +28,11 @@ public class Dam {
         this.createTime = createTime;
     }
 
-    public Integer getCapacity() {
+    public Long getCapacity() {
         return capacity;
     }
 
-    public void setCapacity(Integer capacity) {
+    public void setCapacity(Long capacity) {
         this.capacity = capacity;
     }
 
@@ -52,11 +52,11 @@ public class Dam {
         this.name = name;
     }
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 }
