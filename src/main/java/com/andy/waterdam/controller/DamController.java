@@ -1,13 +1,11 @@
 package com.andy.waterdam.controller;
 
 import com.andy.waterdam.pojo.Dam;
+import com.andy.waterdam.pojo.DamRequest;
 import com.andy.waterdam.service.DamService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.sql.Timestamp;
 import java.util.Date;
@@ -24,39 +22,50 @@ public class DamController {
         return damService.getDamList();
     }
 
-    @GetMapping("/add")
-    public void addDam(HttpServletRequest request) {
+    @PostMapping("/add")
+    @ResponseBody
+    public String addDam(@RequestBody DamRequest damRequest) {
         try {
             Dam dam = new Dam();
-            dam.setName(request.getParameter("name"));
-            dam.setRiver(request.getParameter("river"));
-            dam.setCapacity(Long.parseLong(request.getParameter("capacity")));
-            dam.setCompleteDate(new Timestamp(Long.parseLong(request.getParameter("createTime"))));
+            dam.setName(damRequest.getName());
+            dam.setRiver(damRequest.getRiver());
+            dam.setCapacity(Long.parseLong(damRequest.getCapacity()));
+            dam.setCompleteDate(new Timestamp(Long.parseLong(damRequest.getComplete())));
             damService.insertWaterDam(dam);
+            return "添加成功";
         } catch (Exception e) {
             System.out.printf("添加失败" + e.getMessage());
+            return "添加失败";
         }
     }
 
-    @GetMapping("/update")
-    public void updateDam(HttpServletRequest request) {
+    @PostMapping("/update")
+    @ResponseBody
+    public String updateDam(@RequestBody DamRequest damRequest) {
         try {
             Dam dam = new Dam();
-            dam.setId(Long.parseLong(request.getParameter("id")));
-            dam.setName(request.getParameter("name"));
-            dam.setRiver(request.getParameter("river"));
-            dam.setCapacity(Long.parseLong(request.getParameter("capacity")));
-            dam.setCompleteDate(new Timestamp(Long.parseLong(request.getParameter("createTime"))));
+            dam.setId(Long.parseLong(damRequest.getId()));
+            dam.setName(damRequest.getName());
+            dam.setRiver(damRequest.getRiver());
+            dam.setCapacity(Long.parseLong(damRequest.getCapacity()));
+            dam.setCompleteDate(new Timestamp(Long.parseLong(damRequest.getComplete())));
             damService.updateWaterDam(dam);
+            return "更新成功";
         } catch (Exception e) {
             System.out.printf("更新失败" + e.getMessage());
+            return "更新失败";
         }
     }
 
-    @GetMapping("/delete")
-    public void deleteDam(@RequestParam Long id) {
-        damService.deleteWaterDamById(id);
+    @PostMapping("/delete")
+    @ResponseBody
+    public String deleteDam(@RequestBody DamRequest damRequest) {
+        try {
+            damService.deleteWaterDamById(Long.parseLong(damRequest.getId()));
+            return "删除成功";
+        } catch (Exception e) {
+            System.out.printf("删除失败" + e.getMessage());
+            return "删除失败";
+        }
     }
-
-
 }
