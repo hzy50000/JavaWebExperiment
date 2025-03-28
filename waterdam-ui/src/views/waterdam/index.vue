@@ -1,111 +1,234 @@
 <template>
-  <div class="messageboard-container">
+  <div class="dam-container">
     <div class="header">
-      <h1>留言板</h1>
+      <h1>水库大坝管理</h1>
       <button class="logout-btn" @click="handleLogout">退出登录</button>
     </div>
 
-    <div class="message-form">
-      <textarea
-        v-model="newMessage"
-        placeholder="请输入留言内容..."
-        rows="3"
-      ></textarea>
-      <button class="submit-btn"
-              @click="submitMessage"
-              :disabled="!newMessage.trim() || isSubmitting">
-        {{ isSubmitting ? '发送中...' : '发送留言' }}
-      </button>
+    <!-- 添加新大坝的表单 -->
+    <div class="add-form">
+      <h2>{{ isEditing ? '编辑大坝' : '添加新大坝' }}</h2>
+      <div class="form-group">
+        <label>名称</label>
+        <input v-model="damForm.name" placeholder="输入大坝名称" />
+      </div>
+      <div class="form-group">
+        <label>河流</label>
+        <input v-model="damForm.river" placeholder="输入所在河流" />
+      </div>
+      <div class="form-group">
+        <label>容量(立方米)</label>
+        <input v-model="damForm.capacity" type="number" placeholder="输入容量" />
+      </div>
+      <div class="form-group">
+        <label>完工日期</label>
+        <input v-model="damForm.completeDate" type="date" />
+      </div>
+      <div class="form-buttons">
+        <button class="submit-btn" @click="submitDam" :disabled="isSubmitting">
+          {{ isSubmitting ? '提交中...' : (isEditing ? '更新' : '添加') }}
+        </button>
+        <button v-if="isEditing" class="cancel-btn" @click="cancelEdit">取消</button>
+      </div>
     </div>
 
+    <!-- 大坝列表 -->
     <div v-if="isLoading" class="loading">
       加载中...
     </div>
-    <div v-else class="message-list">
-      <div v-for="message in messages" :key="message.id" class="message-item">
-        <div class="message-header">
-          <span class="username">{{ 'user' }}</span>
-        </div>
-        <div class="message-content">{{ message.message }}</div>
-      </div>
-<!--      <div v-if="messages.length === 0" class="no-messages">-->
-<!--        暂无留言-->
-<!--      </div>-->
+    <div v-else class="dam-list">
+      <h2>大坝列表</h2>
+      <table>
+        <thead>
+        <tr>
+          <th>名称</th>
+          <th>河流</th>
+          <th>容量(立方米)</th>
+          <th>完工日期</th>
+          <th>操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr v-for="dam in dams" :key="dam.id">
+          <td>{{ dam.name }}</td>
+          <td>{{ dam.river }}</td>
+          <td>{{ formatCapacity(dam.capacity) }}</td>
+          <td>{{ formatDate(dam.completeDate) }}</td>
+          <td>
+            <button class="edit-btn" @click="editDam(dam)">编辑</button>
+            <button class="delete-btn" @click="deleteDam(dam.id)">删除</button>
+          </td>
+        </tr>
+        <tr v-if="dams.length === 0">
+          <td colspan="5" class="no-data">暂无数据</td>
+        </tr>
+        </tbody>
+      </table>
     </div>
   </div>
 </template>
 
 <script>
-import { userApi, messageApi } from '@/api/api'
+import { userApi, damApi } from '@/api/api'
 
 export default {
-  name: 'MessageBoard',
+  name: 'DamManagement',
   data() {
     return {
-      messages: [],
-      newMessage: '',
+      dams: [],
       isLoading: false,
-      isSubmitting: false
+      isSubmitting: false,
+      isEditing: false,
+      editingId: null,
+      damForm: {
+        name: '',
+        river: '',
+        capacity: '',
+        completeDate: ''
+      }
     }
   },
   created() {
-    this.fetchMessages()
+    this.fetchDams()
   },
   methods: {
-    async fetchMessages() {
+    async fetchDams() {
       this.isLoading = true
       try {
-        const response = await messageApi.getMessages()
-        console.log('获取留言响应:', response)
-
-        this.messages = Array.isArray(response) ? response : (response?.data || [])
+        const response = await damApi.getDamList()
+        this.dams = Array.isArray(response) ? response : (response?.data || [])
       } catch (error) {
-        console.error('获取留言失败:', error)
+        console.error('获取大坝列表失败:', error)
       } finally {
         this.isLoading = false
       }
     },
-    async submitMessage() {
-      if (!this.newMessage.trim() || this.isSubmitting) {
+
+    async submitDam() {
+      if (!this.validateForm() || this.isSubmitting) {
         return
       }
 
       this.isSubmitting = true
       try {
-        const response = await messageApi.sendMessage(this.newMessage)
-        console.log('发送留言响应:', response)
+        const formData = {
+          name: this.damForm.name,
+          river: this.damForm.river,
+          capacity: this.damForm.capacity,
+          complete: new Date(this.damForm.completeDate).getTime().toString()
+        }
 
-        this.newMessage = '' // 清空输入框
-        await this.fetchMessages() // 刷新留言列表
+        let response
+        if (this.isEditing) {
+          formData.id = this.editingId
+          response = await damApi.updateDam(formData)
+        } else {
+          response = await damApi.addDam(formData)
+        }
+
+        console.log(this.isEditing ? '更新大坝响应:' : '添加大坝响应:', response)
+        this.resetForm()
+        await this.fetchDams()
       } catch (error) {
-        console.error('发送留言失败:', error)
+        console.error(this.isEditing ? '更新大坝失败:' : '添加大坝失败:', error)
       } finally {
         this.isSubmitting = false
       }
     },
+
+    async deleteDam(id) {
+      if (!confirm('确定要删除该大坝吗？')) {
+        return
+      }
+
+      try {
+        const response = await damApi.deleteDam(id)
+        console.log('删除大坝响应:', response)
+        await this.fetchDams()
+      } catch (error) {
+        console.error('删除大坝失败:', error)
+      }
+    },
+
+    editDam(dam) {
+      this.isEditing = true
+      this.editingId = dam.id
+      this.damForm = {
+        name: dam.name,
+        river: dam.river,
+        capacity: dam.capacity,
+        completeDate: this.formatDateForInput(dam.completeDate)
+      }
+    },
+
+    cancelEdit() {
+      this.resetForm()
+    },
+
+    resetForm() {
+      this.isEditing = false
+      this.editingId = null
+      this.damForm = {
+        name: '',
+        river: '',
+        capacity: '',
+        completeDate: ''
+      }
+    },
+
+    validateForm() {
+      if (!this.damForm.name.trim()) {
+        alert('请输入大坝名称')
+        return false
+      }
+      if (!this.damForm.river.trim()) {
+        alert('请输入所在河流')
+        return false
+      }
+      if (!this.damForm.capacity || isNaN(this.damForm.capacity)) {
+        alert('请输入有效的容量')
+        return false
+      }
+      if (!this.damForm.completeDate) {
+        alert('请选择完工日期')
+        return false
+      }
+      return true
+    },
+
+    formatCapacity(capacity) {
+      return Number(capacity).toLocaleString() + ' m³'
+    },
+
+    formatDate(timestamp) {
+      if (!timestamp) return '-'
+      const date = new Date(timestamp)
+      return date.toLocaleDateString()
+    },
+
+    formatDateForInput(timestamp) {
+      if (!timestamp) return ''
+      const date = new Date(timestamp)
+      return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`
+    },
+
     async handleLogout() {
       try {
         const response = await userApi.logout()
         console.log('退出登录响应:', response)
-
-        // 清除本地存储的用户信息
         localStorage.removeItem('user')
         this.$router.push('/login')
       } catch (error) {
         console.error('退出登录失败:', error)
       }
-    },
-    formatTime(time) {
-      if (!time) return ''
-      return new Date(time).toLocaleString()
     }
   }
 }
 </script>
 
 <style scoped>
-.messageboard-container {
-  max-width: 800px;
+.dam-container {
+  max-width: 1000px;
   margin: 0 auto;
   padding: 20px;
 }
@@ -130,26 +253,53 @@ export default {
   background-color: #ff3333;
 }
 
-.message-form {
+.add-form {
+  background-color: #f5f5f5;
+  padding: 20px;
+  border-radius: 8px;
   margin-bottom: 30px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-.message-form textarea {
+.add-form h2 {
+  margin-top: 0;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+.form-group input {
   width: 100%;
-  padding: 10px;
+  padding: 8px;
   border: 1px solid #ddd;
   border-radius: 4px;
-  resize: vertical;
-  margin-bottom: 10px;
 }
 
-.submit-btn {
+.form-buttons {
+  display: flex;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.submit-btn, .cancel-btn {
   padding: 10px 20px;
-  background-color: #4CAF50;
-  color: white;
   border: none;
   border-radius: 4px;
   cursor: pointer;
+}
+
+.submit-btn {
+  background-color: #4CAF50;
+  color: white;
 }
 
 .submit-btn:hover:not(:disabled) {
@@ -161,48 +311,77 @@ export default {
   cursor: not-allowed;
 }
 
+.cancel-btn {
+  background-color: #f44336;
+  color: white;
+}
+
+.cancel-btn:hover {
+  background-color: #e53935;
+}
+
 .loading {
   text-align: center;
   padding: 20px;
   color: #666;
 }
 
-.message-list {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-}
-
-.message-item {
+.dam-list {
   background-color: white;
-  padding: 15px;
   border-radius: 8px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  padding: 20px;
 }
 
-.message-header {
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 8px;
-  color: #666;
+.dam-list h2 {
+  margin-top: 0;
+  margin-bottom: 20px;
+  color: #333;
 }
 
-.username {
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th, td {
+  padding: 12px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+th {
+  background-color: #f2f2f2;
   font-weight: bold;
-  color: #333;
 }
 
-.time {
-  font-size: 0.9em;
+.edit-btn, .delete-btn {
+  padding: 6px 12px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-right: 5px;
 }
 
-.message-content {
-  color: #333;
-  line-height: 1.5;
-  word-break: break-all;
+.edit-btn {
+  background-color: #2196F3;
+  color: white;
 }
 
-.no-messages {
+.edit-btn:hover {
+  background-color: #0b7dda;
+}
+
+.delete-btn {
+  background-color: #f44336;
+  color: white;
+}
+
+.delete-btn:hover {
+  background-color: #e53935;
+}
+
+.no-data {
   text-align: center;
   color: #666;
   padding: 20px;
