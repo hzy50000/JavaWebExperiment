@@ -14,11 +14,6 @@ public class DamServiceImpl implements DamService {
     private DamMapper damMapper;
 
     @Override
-    public List<Dam> getWaterDamList() {
-        return damMapper.getWaterDamList();
-    }
-
-    @Override
     public List<Dam> getDamList() {
         return damMapper.getWaterDamList();
     }

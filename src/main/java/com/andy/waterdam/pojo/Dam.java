@@ -1,5 +1,6 @@
 package com.andy.waterdam.pojo;
 
+import java.sql.Timestamp;
 import java.util.Date;
 
 public class Dam {
@@ -7,9 +8,9 @@ public class Dam {
     private String name;
     private String river;
     private Long capacity;
-    private Date createTime;
+    private Timestamp createTime;
 
-    public Dam(Long id, String name, String river, Long capacity, Date createTime) {
+    public Dam(Long id, String name, String river, Long capacity, Timestamp createTime) {
         this.id = id;
         this.name = name;
         this.river = river;
@@ -24,7 +25,7 @@ public class Dam {
         return createTime;
     }
 
-    public void setCreateTime(Date createTime) {
+    public void setCreateTime(Timestamp createTime) {
         this.createTime = createTime;
     }
 

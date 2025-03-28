@@ -6,7 +6,6 @@ import java.util.List;
 
 
 public interface DamService {
-    public List<Dam> getWaterDamList();
     public List<Dam> getDamList();
     public Dam getWaterDamById(Long id);
     public void insertWaterDam(Dam dam);

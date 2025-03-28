@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
 
@@ -30,7 +31,7 @@ public class DamController {
             dam.setName(request.getParameter("name"));
             dam.setRiver(request.getParameter("river"));
             dam.setCapacity(Long.parseLong(request.getParameter("capacity")));
-            dam.setCreateTime(new Date(Long.parseLong(request.getParameter("createTime"))));
+            dam.setCreateTime(new Timestamp(Long.parseLong(request.getParameter("createTime"))));
             damService.insertWaterDam(dam);
         } catch (Exception e) {
             System.out.printf("添加失败" + e.getMessage());
@@ -45,7 +46,7 @@ public class DamController {
             dam.setName(request.getParameter("name"));
             dam.setRiver(request.getParameter("river"));
             dam.setCapacity(Long.parseLong(request.getParameter("capacity")));
-            dam.setCreateTime(new Date(Long.parseLong(request.getParameter("createTime"))));
+            dam.setCreateTime(new Timestamp(Long.parseLong(request.getParameter("createTime"))));
             damService.updateWaterDam(dam);
         } catch (Exception e) {
             System.out.printf("更新失败" + e.getMessage());
