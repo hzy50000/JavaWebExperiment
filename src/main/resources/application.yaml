@@ -23,3 +23,4 @@ mybatis:
   type-aliases-package: com.andy.messageboard.entity
   configuration:
     map-underscore-to-camel-case: true
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl

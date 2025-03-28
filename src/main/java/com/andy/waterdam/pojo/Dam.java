@@ -1,5 +1,7 @@
 package com.andy.waterdam.pojo;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.sql.Timestamp;
 import java.util.Date;
 
@@ -8,6 +10,7 @@ public class Dam {
     private String name;
     private String river;
     private Long capacity;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     private Timestamp createTime;
 
     public Dam(Long id, String name, String river, Long capacity, Timestamp createTime) {
