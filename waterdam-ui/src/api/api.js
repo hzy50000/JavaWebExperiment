@@ -46,3 +46,38 @@ export const messageApi = {
     })
   }
 }
+
+export const damApi = {
+  // 获取水库列表
+  getDamList: () => {
+    return request({
+      url: '/api/dam/list',
+      method: 'get'
+    })
+  },
+  //修改水库信息
+  updateDam: (dam) => {
+    return request({
+      url: '/api/dam/update',
+      method: 'post',
+      data: dam
+    })
+  },
+
+  //删除水库
+  deleteDam: (id) => {
+    return request({
+      url: '/api/dam/delete',
+      method: 'post',
+      data: { id }
+    })
+  },
+  //添加水库
+  addDam: (dam) => {
+    return request({
+      url: '/api/dam/add',
+      method: 'post',
+      data: dam
+    })
+  }
+}
