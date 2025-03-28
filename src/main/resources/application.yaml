@@ -1,6 +1,6 @@
 spring:
   application:
-    name: MessageBoard
+    name: WaterDam
   session:
     cookie:
       same-site: none
