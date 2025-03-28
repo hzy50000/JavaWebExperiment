@@ -3,12 +3,10 @@ package com.andy.waterdam.controller;
 import com.andy.waterdam.pojo.Dam;
 import com.andy.waterdam.pojo.DamRequest;
 import com.andy.waterdam.service.DamService;
-import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.Timestamp;
-import java.util.Date;
 import java.util.List;
 
 @RestController
