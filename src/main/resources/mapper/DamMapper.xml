@@ -25,7 +25,7 @@
     <!-- 插入新水库 -->
     <insert id="insertWaterDam" parameterType="com.andy.waterdam.pojo.Dam" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO waterdam (name, river, capacity, complete_date)
-        VALUES (#{name}, #{river}, #{capacity}, #{createTime})
+        VALUES (#{name}, #{river}, #{capacity}, #{completeDate})
     </insert>
 
     <!-- 更新水库信息 -->
@@ -35,7 +35,7 @@
             <if test="name != null">name = #{name},</if>
             <if test="river != null">river = #{river},</if>
             <if test="capacity != null">capacity = #{capacity},</if>
-            <if test="createTime != null">complete_date = #{createTime},</if>
+            <if test="completeDate != null">complete_date = #{completeDate},</if>
         </set>
         WHERE id = #{id}
     </update>
