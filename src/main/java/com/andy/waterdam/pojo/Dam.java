@@ -10,9 +10,8 @@ public class Dam {
     private String name;
     private String river;
     private Long capacity;
-
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
-    private Timestamp completeDate; // 改为与数据库字段名匹配的驼峰命名
+    private Timestamp completeDate;
 
     public Dam(Long id, String name, String river, Long capacity, Timestamp completeDate) {
         this.id = id;
@@ -25,21 +24,12 @@ public class Dam {
     public Dam() {
     }
 
-    public Date getCompleteDate() { // 更改getter和setter方法名
+    public Date getCompleteDate() {
         return completeDate;
     }
 
-    public void setCompleteDate(Timestamp completeDate) { // 更改getter和setter方法名
+    public void setCompleteDate(Timestamp completeDate) {
         this.completeDate = completeDate;
-    }
-
-    // 为了兼容现有代码，保留原有的getter和setter
-    public Date getCreateTime() {
-        return completeDate;
-    }
-
-    public void setCreateTime(Timestamp createTime) {
-        this.completeDate = createTime;
     }
 
     public Long getCapacity() {

@@ -15,7 +15,7 @@ public class DamServiceImpl implements DamService {
 
     @Override
     public List<Dam> getDamList() {
-        System.out.println(damMapper.getWaterDamList() + "\n\n\n\n\n");
+//        System.out.println(damMapper.getWaterDamList() + "\n\n\n\n\n");
         return damMapper.getWaterDamList();
     }
 
